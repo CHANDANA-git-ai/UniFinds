@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.venv/
+env/
+venv/
+ENV/
+
+# Database files
+*.db
+*.sqlite3
+
+# Uploads
+uploads/*/*
+!uploads/lost/.gitkeep
+!uploads/found/.gitkeep
+lost_found_matching/uploads/*/*
+!lost_found_matching/uploads/lost/.gitkeep
+!lost_found_matching/uploads/found/.gitkeep
+
+# System & IDE files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

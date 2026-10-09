@@ -1,0 +1,790 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Unifinds — Full Lost & Found</title>
+
+  <link rel="stylesheet" href="css/style.min.css">
+
+</head>
+
+<body>
+
+  <!-- =========================
+     NAVIGATION
+  ========================== -->
+
+  <header class="nav">
+
+    <div class="brand">
+
+      <div class="logo">
+        U
+      </div>
+
+      Unifinds
+
+    </div>
+
+    <div class="navlinks">
+
+      <button class="btn small" onclick="go('dashboard')">Dashboard</button>
+      <button class="btn small" onclick="go('matches')">Matches</button>
+      <button class="btn small" onclick="go('verify')">Verification</button>
+      <button class="btn small" onclick="go('results')">Results</button>
+      <button class="btn small" onclick="go('lost')">Report Lost</button>
+      <button class="btn small" onclick="go('found')">Report Found</button>
+
+    </div>
+
+    <div class="user-pill" id="userPill">
+      <button class="btn small" id="authButton" onclick="openLogin()">Sign in</button>
+    </div>
+
+  </header>
+
+  <main>
+
+    <!-- =====================================================
+       DASHBOARD
+    ====================================================== -->
+
+    <section id="dashboard" class="screen active">
+
+      <!-- HERO -->
+
+      <div class="hero">
+
+        <h1>
+          From
+          <span class="accent">lost report</span>
+          to verified return.
+        </h1>
+
+        <p>
+          A simple and modern lost-and-found dashboard
+          for filing reports, checking matches, and
+          verifying ownership before the item is returned.
+        </p>
+
+        <!-- STATISTICS -->
+
+        <div class="stats">
+
+          <div class="stat">
+            <b id="sTotal">0</b>
+            <span>Total reports</span>
+          </div>
+
+          <div class="stat">
+            <b id="sLost">0</b>
+            <span>Lost</span>
+          </div>
+
+          <div class="stat">
+            <b id="sFound">0</b>
+            <span>Found</span>
+          </div>
+
+          <div class="stat">
+            <b id="sMatches">0</b>
+            <span>Potential matches</span>
+          </div>
+
+          <div class="stat">
+            <b id="sVerified">0</b>
+            <span>Verified returns</span>
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- REPORT SECTION -->
+
+      <div class="section" id="reportSection">
+
+        <div class="section-head">
+
+          <div>
+
+            <h2>Report a lost or found item</h2>
+
+            <p>File a new report and start matching items faster.</p>
+
+          </div>
+
+        </div>
+
+        <div class="grid2">
+
+          <!-- LOST -->
+
+          <div class="card choice lost">
+
+            <div class="icon">🔎</div>
+
+            <h3>I lost an item</h3>
+
+            <p>Create a lost report with private ownership details that can later be turned into verification questions.</p>
+
+            <button class="btn primary" onclick="go('lost')">Create Lost Report</button>
+
+          </div>
+
+          <!-- FOUND -->
+
+          <div class="card choice found">
+
+            <div class="icon">📦</div>
+
+            <h3>I found an item</h3>
+
+            <p>Create a found report. The report becomes searchable by the matching engine.</p>
+
+            <button class="btn teal" onclick="go('found')">Create Found Report</button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- STORED REPORTS -->
+
+      <div class="section">
+
+        <div class="section-head">
+
+          <div>
+
+            <h2>Stored reports</h2>
+
+            <p>Recent lost and found entries stored in the system.</p>
+
+          </div>
+
+        </div>
+
+        <div class="ledger">
+
+          <div class="row head">
+
+            <div>Report</div>
+
+            <div>Type</div>
+
+            <div>Item</div>
+
+            <div>Location</div>
+
+            <div>Pipeline</div>
+
+            <div>Action</div>
+
+          </div>
+
+          <div id="ledger"></div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================================================
+       LOST REPORT
+    ====================================================== -->
+
+    <section id="lost" class="screen">
+
+      <div class="form-card card">
+
+        <div class="form-head">
+
+          <div>
+
+            <h2>Stage 1–3 · Lost Report</h2>
+
+            <p style="color:var(--muted);font-size:12px;margin-top:5px;">This report supplies the claimant's private facts for later ownership verification.</p>
+
+          </div>
+
+          <span class="tag lost">LOST</span>
+
+        </div>
+
+        <form id="lostForm">
+
+          <div class="fields">
+
+            <!-- ITEM NAME -->
+
+            <div class="field">
+
+              <label>Item name</label>
+
+              <input id="lItem" name="item_name" required placeholder="Black OnePlus phone">
+
+            </div>
+
+            <!-- CATEGORY -->
+
+            <div class="field">
+
+              <label>Category</label>
+
+              <select id="lCat" name="category" required>
+
+                <option value="">Select</option>
+
+                <option>Electronics</option>
+
+                <option>Wallet</option>
+
+                <option>ID Card</option>
+
+                <option>Bag</option>
+
+                <option>Keys</option>
+
+                <option>Other</option>
+
+              </select>
+
+            </div>
+
+            <!-- DATE -->
+
+            <div class="field">
+
+              <label>Date lost</label>
+
+              <input id="lDate" name="event_date" type="date" required>
+
+            </div>
+
+            <!-- TIME -->
+
+            <div class="field">
+
+              <label>Approx. time</label>
+
+              <input id="lTime" name="event_time" type="time" required>
+
+            </div>
+
+            <!-- DESCRIPTION -->
+
+            <div class="field full">
+
+              <label>Item details</label>
+
+              <textarea id="lDesc" name="description" required placeholder="Color, brand, model, unique marks, stickers, case, contents..."></textarea>
+
+            </div>
+
+            <!-- LOCATION -->
+
+            <div class="field">
+
+              <label>Last seen location</label>
+
+              <input id="lLoc" name="location_name" required placeholder="Library, 2nd floor">
+
+            </div>
+
+            <!-- CONTACT -->
+
+            <div class="field">
+
+              <label>Contact</label>
+
+              <input id="lContact" name="contact_email" required placeholder="College email or phone">
+
+            </div>
+
+            <!-- PRIVATE DETAILS -->
+
+            <div class="field full">
+
+              <label>Private ownership details <span style="color:var(--amber);">(used to generate questions)</span></label>
+
+              <textarea id="lPrivate" name="identifying_features" required placeholder="Example: blue case, cracked lower-left corner, 128 GB, sticker near camera"></textarea>
+
+            </div>
+
+            <!-- IMAGE -->
+
+            <div class="field full">
+
+              <label>Item image</label>
+
+              <div class="filebox">
+
+                <input id="lImg" name="image" type="file" accept="image/*" required>
+
+                <div id="lPrev" class="preview"><img></div>
+
+                <div id="lFilename" class="reason" style="margin-top:8px;color:var(--muted);"></div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <div id="lErr" class="error">Please complete all required fields.</div>
+
+          <div class="actions">
+
+            <button type="button" class="btn" onclick="go('dashboard')">Cancel</button>
+
+            <button class="btn primary">Store Lost Report</button>
+
+          </div>
+
+        </form>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================================================
+       FOUND REPORT
+    ====================================================== -->
+
+    <section id="found" class="screen">
+
+      <div class="form-card card">
+
+        <div class="form-head">
+
+          <div>
+
+            <h2>Stage 1–3 · Found Report</h2>
+
+            <p style="color:var(--muted);font-size:12px;margin-top:5px;">The found report becomes the candidate record retrieved by the matching engine.</p>
+
+          </div>
+
+          <span class="tag found">FOUND</span>
+
+        </div>
+
+        <form id="foundForm">
+
+          <div class="fields">
+
+            <div class="field">
+
+              <label>Item name</label>
+
+              <input id="fItem" name="item_name" required placeholder="Black smartphone">
+
+            </div>
+
+            <div class="field">
+
+              <label>Category</label>
+
+              <select id="fCat" name="category" required>
+
+                <option value="">Select</option>
+
+                <option>Electronics</option>
+
+                <option>Wallet</option>
+
+                <option>ID Card</option>
+
+                <option>Bag</option>
+
+                <option>Keys</option>
+
+                <option>Other</option>
+
+              </select>
+
+            </div>
+
+            <div class="field">
+
+              <label>Date found</label>
+
+              <input id="fDate" name="event_date" type="date" required>
+
+            </div>
+
+            <div class="field">
+
+              <label>Approx. time</label>
+
+              <input id="fTime" name="event_time" type="time" required>
+
+            </div>
+
+            <div class="field full">
+
+              <label>Item details</label>
+
+              <textarea id="fDesc" name="description" required placeholder="Visible color, brand, model, marks..."></textarea>
+
+            </div>
+
+            <div class="field">
+
+              <label>Location found</label>
+
+              <input id="fLoc" name="location_name" required placeholder="Library, 2nd floor">
+
+            </div>
+
+            <div class="field">
+
+              <label>Currently kept at</label>
+
+              <input id="fKeep" name="keep_at" required placeholder="Security desk, Block A">
+
+            </div>
+
+            <div class="field">
+
+              <label>Finder contact</label>
+
+              <input id="fContact" name="contact_name" required placeholder="College email or phone">
+
+            </div>
+
+            <div class="field">
+
+              <label>Item image</label>
+
+              <div class="filebox">
+
+                <input id="fImg" name="image" type="file" accept="image/*" required>
+
+                <div id="fPrev" class="preview"><img></div>
+
+                <div id="fFilename" class="reason" style="margin-top:8px;color:var(--muted);"></div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <div id="fErr" class="error">Please complete all required fields.</div>
+
+          <div class="actions">
+
+            <button type="button" class="btn" onclick="go('dashboard')">Cancel</button>
+
+            <button class="btn teal">Store Found Report</button>
+
+          </div>
+
+        </form>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================================================
+       STAGE 4 — AI ANALYSIS
+    ====================================================== -->
+
+    <section id="analysis" class="screen">
+
+      <div class="section-head">
+
+        <div>
+
+          <h2>Stage 4 · AI Analysis</h2>
+
+          <p>Extract image embedding, text embedding and object features. Integration point for later AI service.</p>
+
+        </div>
+
+        <span class="tag ai">INTEGRATION POINT</span>
+
+      </div>
+
+      <div class="card">
+
+        <div id="analysisEmpty" class="notice violet">Create at least one report first. Then select a report below and run analysis.</div>
+
+        <div id="analysisBody" class="hidden">
+
+          <div class="grid2">
+
+            <div class="card">
+
+              <h3>Image Embedding</h3>
+
+              <p id="aImage" class="reason" style="margin-top:8px;"></p>
+
+              <div class="scorebar"><i id="aImageBar" style="width:0%;"></i></div>
+
+              <span class="chip green">CNN / CLIP integration point</span>
+
+            </div>
+
+            <div class="card">
+
+              <h3>Text Embedding</h3>
+
+              <p id="aText" class="reason" style="margin-top:8px;"></p>
+
+              <div class="scorebar"><i id="aTextBar" style="width:0%;"></i></div>
+
+              <span class="chip green">Sentence embedding integration point</span>
+
+            </div>
+
+            <div class="card">
+
+              <h3>Object Features</h3>
+
+              <p id="aObject" class="reason" style="margin-top:8px;"></p>
+
+              <span class="chip green">Object detector integration point</span>
+
+            </div>
+
+            <div class="card">
+
+              <h3>Stored Analysis</h3>
+
+              <p id="aStored" class="reason" style="margin-top:8px;"></p>
+
+              <span class="chip amber">Stage 4 complete</span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================================================
+       STAGES 5–8 — MATCHING
+    ====================================================== -->
+
+    <section id="matches" class="screen">
+
+      <div class="section-head">
+
+        <div>
+
+          <h2>Stages 5–8 · Matching Engine</h2>
+
+          <p>Fetch existing reports → request backend matching → rank matches → show top potential matches.</p>
+
+        </div>
+
+      </div>
+
+      <div class="card">
+
+        <div class="fields">
+
+          <div class="field">
+
+            <label>Select a lost report</label>
+
+            <select id="matchLost"></select>
+
+          </div>
+
+          <div class="field">
+
+            <label>Candidate pool</label>
+
+            <select id="matchPool"><option value="all">All open found reports</option></select>
+
+          </div>
+
+        </div>
+
+        <div class="actions">
+
+          <button class="btn primary" onclick="runMatching()">Run Matching Engine</button>
+
+        </div>
+
+      </div>
+
+      <div id="matchResults" class="section"></div>
+
+    </section>
+
+
+    <!-- =====================================================
+       STAGE 9 — OWNERSHIP VERIFICATION
+    ====================================================== -->
+
+    <section id="verify" class="screen">
+
+      <div class="section-head">
+
+        <div>
+
+          <h2>Stage 9 · Ownership Verification</h2>
+
+          <p>Generate private questions from the lost report, collect claimant answers, and optionally attach a supporting document.</p>
+
+        </div>
+
+        <span class="tag warn">HUMAN-IN-THE-LOOP</span>
+
+      </div>
+
+      <div class="notice amber">Important: this prototype records verification metadata only. Production verification requires a secure backend and an approved verification provider.</div>
+
+      <div class="verify-layout" style="margin-top:14px;">
+
+        <div class="card">
+
+          <h3>9A · Select potential match</h3>
+
+          <div class="field" style="margin-top:12px;">
+
+            <label>Lost report</label>
+
+            <select id="verifyLost"></select>
+
+          </div>
+
+          <div class="field" style="margin-top:12px;">
+
+            <label>Found report</label>
+
+            <select id="verifyFound"></select>
+
+          </div>
+
+          <button class="btn primary" style="margin-top:14px;" onclick="generateQuestions()">Generate Private Questions</button>
+
+        </div>
+
+        <div class="card">
+
+          <h3>9B · Claimant verification</h3>
+
+          <div id="questions"><p class="reason" style="margin-top:10px;">Select reports and generate questions.</p></div>
+
+          <div class="field" style="margin-top:12px;"><label>Supporting document (optional)</label><input id="docFile" type="file" accept="image/*,.pdf"></div>
+
+          <button class="btn teal" style="margin-top:14px;" onclick="verifyOwnership()">Verify Answers</button>
+
+          <div id="verifyErr" class="error">Please answer all generated questions.</div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================================================
+       STAGE 10 — RESULTS
+    ====================================================== -->
+
+    <section id="results" class="screen">
+
+      <div class="section-head">
+
+        <div>
+
+          <h2>Stage 10 · Verification Result</h2>
+
+          <p>Confidence result and next action after ownership verification.</p>
+
+        </div>
+
+      </div>
+
+      <div id="resultBox" class="card">
+
+        <div class="notice violet">No verification has been completed yet.</div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================================================
+       STAGE 11 — SAFE RETURN
+    ====================================================== -->
+
+    <section id="return" class="screen">
+
+      <div class="section-head">
+
+        <div>
+
+          <h2>Stage 11 · Safe Return / User Alert</h2>
+
+          <p>Notify both parties only after a successful verification decision.</p>
+
+        </div>
+
+      </div>
+
+      <div id="returnBox" class="card"><div class="notice violet">Complete ownership verification first.</div></div>
+
+    </section>
+
+    <!-- Profile screen -->
+    <section id="profile" class="screen">
+      <div class="card form-card">
+        <h2>Profile</h2>
+        <div id="profileBody">
+          <p class="reason">Not signed in.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+
+  <!-- =====================================================
+     FOOTER
+  ====================================================== -->
+
+  <footer class="footer">Unifinds full architecture prototype · Backend-powered storage · AI/document verification integration points for later work.</footer>
+
+
+  <!-- =====================================================
+     MODALS (Login / Register / Generic modal)
+  ====================================================== -->
+
+  <div id="modal" class="modal"><div class="modal-card"><button class="close" onclick="closeModal()">×</button><div class="tag found">Stored</div><div class="big" id="modalId">#</div><p id="modalText" style="color:var(--muted);line-height:1.6;"></p><button class="btn primary" onclick="closeModal();go('dashboard');" style="margin-top:15px;">Back to dashboard</button></div></div>
+
+  <div id="loginModal" class="modal"><div class="modal-card"><button class="close" onclick="closeAuthModal('loginModal')">×</button><h3>Student Login</h3><form id="loginForm"><div class="field"><label>College Email or Student ID</label><input id="loginUser" required></div><div class="field"><label>Password</label><input id="loginPass" type="password" required></div><div class="actions"><button class="btn" type="button" onclick="closeAuthModal('loginModal')">Cancel</button><button class="btn primary" type="submit">Sign in</button></div></form></div></div>
+
+  <div id="registerModal" class="modal"><div class="modal-card"><button class="close" onclick="closeAuthModal('registerModal')">×</button><h3>Student Registration</h3><form id="registerForm"><div class="field"><label>Full name</label><input id="regName" required></div><div class="field"><label>Student ID / USN</label><input id="regUSN" required></div><div class="field"><label>College email</label><input id="regEmail" type="email" required></div><div class="field"><label>Password</label><input id="regPass" type="password" required></div><div class="field"><label>Confirm password</label><input id="regPass2" type="password" required></div><div class="actions"><button class="btn" type="button" onclick="closeAuthModal('registerModal')">Cancel</button><button class="btn primary" type="submit">Create account</button></div></form></div></div>
+
+  <script>window.API_BASE_URL = 'http://127.0.0.1:8000';</script>
+  <script src="js/app.min.js" defer></script>
+  <script>
+    if('serviceWorker' in navigator){
+      navigator.serviceWorker.register('/sw.js').catch(()=>{});
+    }
+  </script>
+
+</body>
+
+</html>

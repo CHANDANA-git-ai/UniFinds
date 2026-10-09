@@ -26,3 +26,10 @@ lost_found_matching/uploads/*/*
 Thumbs.db
 .vscode/
 .idea/
+database/*.db
+uploads/*/*
+!uploads/lost/.gitkeep
+!uploads/found/.gitkeep
+__pycache__/
+.pytest_cache/
+.venv/
